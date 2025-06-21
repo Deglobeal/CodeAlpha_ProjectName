@@ -18,9 +18,6 @@ POST	/api/token/refresh/	Refresh access token	No
 Method	Endpoint	Description	Auth Required
 GET	/api/events/	List all events	No
 POST	/api/events/	Create new event	Yes
-GET	/api/events/<int:pk>/	Get event details	Yes
-PUT	/api/events/<int:pk>/	Update event	Yes
-DELETE	/api/events/<int:pk>/	Delete event	Yes
 3. Registration Management
 Method	Endpoint	Description	Auth Required
 POST	/api/register/	Register for an event	Yes
