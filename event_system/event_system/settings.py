@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'event',  # Custom app for event management
+    'rest_framework',  # Django REST Framework for API support
+    'corsheaders',  # CORS headers for cross-origin requests
+    'rest_framework_simplejwt',  # JWT authentication for REST framework'
 ]
 
 MIDDLEWARE = [
@@ -47,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Middleware for handling CORS
 ]
 
 ROOT_URLCONF = 'event_system.urls'
@@ -74,8 +81,12 @@ WSGI_APPLICATION = 'event_system.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',  # Use PostgreSQL as the database backend
+        'NAME': 'event_db',  # Name of the database
+        'USER': 'event_user',  # Database user
+        'PASSWORD': 'password',  # Database user's password
+        'HOST': 'localhost',  # Database host
+        'PORT': '5432',  # Database port
     }
 }
 
@@ -98,6 +109,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # Corrected path
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Only authenticated users can access the API
+    ],
+    
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Set access token lifetime to 60 minutes
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=6),  # Set refresh token lifetime to 6 hours
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
